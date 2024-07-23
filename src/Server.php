@@ -44,7 +44,7 @@ class Server
             'QUERY_STRING' => $request->query,
         ];
 
-        $cmd =    $request->path;
+        $cmd = $this->public .$request->path;
         $params = str_replace('+', ' ', $request->query);
 
         $descriptor_spec = [
@@ -52,8 +52,8 @@ class Server
             1 => ['pipe', 'w'], // stdout
             2 => ['pipe', 'w'], // stderr
         ];
-var_dump($cmd);
-        $process = proc_open($cmd . ' ' . $params, $descriptor_spec, $pipes, $this->public , $env);
+        echo "Running: $cmd \n";
+        $process = proc_open($cmd . ' ' . $params, $descriptor_spec, $pipes, $this->public, $env);
         if (!is_resource($process)) {
             echo 'Error opening CGI program: ' . $cmd . "\n";
             return;
